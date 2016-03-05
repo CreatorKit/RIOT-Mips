@@ -1,0 +1,2 @@
+FEATURES_PROVIDED += periph_timer
+FEATURES_PROVIDED += periph_uart
