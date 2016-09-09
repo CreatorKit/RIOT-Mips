@@ -2,7 +2,7 @@
 export TARGET_ARCH ?= mips-mti-elf
 
 # define build specific options
-export CFLAGS_CPU   = -EL -march=mips32r2
+export CFLAGS_CPU   = -EL -march=mips32r2 -g2
 export CFLAGS_LINK  = -ffunction-sections -fdata-sections -fno-builtin -fshort-enums
 
 export CFLAGS += $(CFLAGS_CPU) $(CFLAGS_LINK) $(CFLAGS_DBG) $(CFLAGS_OPT)
