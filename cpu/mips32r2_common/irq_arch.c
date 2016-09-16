@@ -1,14 +1,12 @@
 #include <mips/m32c0.h>
 #include "arch/irq_arch.h"
 
-
 /*
+ NO IRQ stack Yet.
 
-NO IRQ stack Yet.
-
-#define ISR_STACK_SIZE 4096
-__attribute__ ((aligned (8))) int __isr_stack[ISR_STACK_SIZE/sizeof(int)];
-*/
+ #define ISR_STACK_SIZE 4096
+ __attribute__ ((aligned (8))) int __isr_stack[ISR_STACK_SIZE/sizeof(int)];
+ */
 
 unsigned int irq_arch_enable(void)
 {
@@ -26,7 +24,7 @@ unsigned int irq_arch_disable(void)
 
 void irq_arch_restore(unsigned int state)
 {
-	if (state & SR_IE) {
+	if(state & SR_IE) {
 		mips32_bs_c0(C0_STATUS, SR_IE);
 	} else {
 		mips32_bc_c0(C0_STATUS, SR_IE);

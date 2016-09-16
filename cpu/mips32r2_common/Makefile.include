@@ -1,11 +1,11 @@
 # Target triple for the build.
 export TARGET_ARCH ?= mips-mti-elf
 
+
 export ABI=32
 export MEMORY_BASE=0x80000000
 export MEMORY_SIZE=1M
 export APP_START=0x80002000
-export ELF_ENTRY=mips_start
 
 include $(MIPS_ELF_ROOT)/share/mips/rules/mipshal.mk
 

@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+/* This file must exist else RIOT won't compile */
+
 static inline void cpu_print_last_instruction(void)
 {
 }
