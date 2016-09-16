@@ -1,11 +1,10 @@
 # Target triple for the build.
 export TARGET_ARCH ?= mips-mti-elf
 
-
 export ABI=32
 export MEMORY_BASE=0x80000000
 export MEMORY_SIZE=1M
-export APP_START=0x80002000
+export APP_START=0x80000000
 
 include $(MIPS_ELF_ROOT)/share/mips/rules/mipshal.mk
 
@@ -20,6 +19,7 @@ export CFLAGS += $(CFLAGS_CPU) $(CFLAGS_LINK) $(CFLAGS_DBG)
 
 export ASFLAGS += $(CFLAGS_CPU) $(CFLAGS_DBG)
 
+export LINKFLAGS += $(MIPS_HAL_LDFLAGS) -mabi=$(ABI)
 export LINKFLAGS += -Tuhi32.ld
 export LINKFLAGS += $(CFLAGS_CPU) $(CFLAGS_DBG) $(CFLAGS_OPT)
 export LINKFLAGS += -Wl,--gc-sections
