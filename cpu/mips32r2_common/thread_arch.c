@@ -1,10 +1,13 @@
 #include <mips/cpu.h>
 #include <mips/hal.h>
-#include <stdio.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 #include "thread.h"
 #include "cpu.h"
 #include "cpu_conf.h"
+#include "periph_conf.h" //for debug uart number.
+#include "periph/uart.h"
 
 #define STACK_END_PAINT 0xdeadc0de
 #define C0_STATUS_EXL 2
@@ -110,14 +113,65 @@ void thread_arch_yield(void)
 void __attribute__((nomips16))
 _mips_handle_exception(struct gpctx *ctx, int exception)
 {
-	unsigned int fault_instruction = 0, return_instruction = 0;
+	unsigned int syscall_num = 0, return_instruction = 0;
 	struct gpctx *new_ctx;
 
 	switch(exception) {
 
 	case EXC_SYS:
-		fault_instruction = *((unsigned int *)(ctx->epc));
-		if(((fault_instruction >> 6) & 0xFFFFF) == 2) {
+		syscall_num = (*((unsigned int *)(ctx->epc)) >> 6) & 0xFFFF;
+#ifdef DEBUG_VIA_UART
+#include <mips/uhi_syscalls.h>
+		/*
+		 * intercept UHI write syscalls (printf) which would normally
+		 * get routed to debug probe or bootloader handler and output
+		 * via a UART
+		 */
+
+		if(syscall_num == __MIPS_UHI_SYSCALL_NUM) {
+			if(ctx->t2[1] == __MIPS_UHI_WRITE &&
+			  (ctx->a[0] == STDOUT_FILENO || ctx->a[0] == STDERR_FILENO)){
+				uint32_t status = irq_arch_disable();
+				uart_write(DEBUG_VIA_UART,(uint8_t*)ctx->a[1],ctx->a[2]);
+				ctx->v[0] = ctx->a[2];
+				ctx->epc += 4; /*move PC past the syscall */
+				irq_arch_restore(status);
+				return;
+			}
+			else if(ctx->t2[1] == __MIPS_UHI_FSTAT &&
+				(ctx->a[0] == STDOUT_FILENO || ctx->a[0] == STDERR_FILENO)){
+				/*
+				 * Printf fstat's the stdout/stderr file so
+				 * fill out a minimal struct stat.
+				 */
+				struct stat* sbuf = (struct stat*)ctx->a[1];
+				sbuf->st_mode = S_IRUSR | S_IWUSR | S_IWGRP;
+				sbuf->st_blksize = BUFSIZ;
+				sbuf->st_dev = 0;
+				sbuf->st_ino = 0;
+				sbuf->st_nlink = 0;
+				sbuf->st_uid = 0;
+				sbuf->st_gid = 0;
+				sbuf->st_rdev = 0;
+				sbuf->st_size = 0;
+				sbuf->st_atime = (time_t) 0;
+				sbuf->st_spare1 = 0;
+				sbuf->st_mtime = (time_t) 0;
+				sbuf->st_spare2 = 0;
+				sbuf->st_ctime = (time_t) 0;
+				sbuf->st_spare3 = 0;
+				sbuf->st_blocks = 0;
+				sbuf->st_spare4[0] = 0;
+				sbuf->st_spare4[1] = 0;
+				/* return 0 */
+				ctx->v[0] = 0;
+				ctx->epc += 4; /*move PC past the syscall */
+				return;
+			}
+		}
+		else
+#endif
+		if(syscall_num == 2) {
 			/* Syscall 1 is reserved for UHI.
 			 *
 			 * save the stack pointer in the thread info
