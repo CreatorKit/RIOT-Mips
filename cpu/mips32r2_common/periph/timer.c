@@ -9,6 +9,7 @@
 #include "sched.h"
 #include "thread.h"
 #include "board.h"
+#include "irq.h"
 
 /*
  * setting TIMER_ACCURACY_SHIFT lower will improve accuracy
@@ -69,7 +70,9 @@ int timer_init(tim_t dev, unsigned long freq, timer_cb_t cb, void *arg)
 	mips32_bc_c0(C0_CAUSE, CR_DC);
 
 	/* Enable Timer Interrupts */
+#ifndef PIC32
 	mips32_bs_c0(C0_STATUS, SR_HINT5);
+#endif
 
 	return 0;
 }
@@ -86,9 +89,9 @@ int timer_set(tim_t dev, int channel, unsigned int timeout)
 	timeout >>= TIMER_ACCURACY_SHIFT;
 	timeout <<= TIMER_ACCURACY_SHIFT;
 
-	asm volatile("di");
+	uint32_t status = irq_arch_disable();
 	compares[channel] = counter + timeout;
-	asm volatile("ei");
+	irq_arch_restore(status);
 
 	return channel;
 }
@@ -105,9 +108,9 @@ int timer_set_absolute(tim_t dev, int channel, unsigned int value)
 	value >>= TIMER_ACCURACY_SHIFT;
 	value <<= TIMER_ACCURACY_SHIFT;
 
-	asm volatile("di");
+	uint32_t status = irq_arch_disable();
 	compares[channel] = value;
-	asm volatile("ei");
+	irq_arch_restore(status);
 
 	return channel;
 }
@@ -121,9 +124,9 @@ int timer_clear(tim_t dev, int channel)
 	if(channel >= CHANNELS)
 		return -1;
 
-	asm volatile("di");
+	uint32_t status = irq_arch_disable();
 	compares[channel] = 0;
-	asm volatile("ei");
+	irq_arch_restore(status);
 
 	return channel;
 }
@@ -148,23 +151,54 @@ void timer_stop(tim_t dev)
 
 void timer_irq_enable(tim_t dev)
 {
+#ifndef PIC32
 	mips32_bs_c0(C0_STATUS, SR_HINT5);
+#endif
 }
 
 void timer_irq_disable(tim_t dev)
 {
+#ifndef PIC32
 	mips32_bc_c0(C0_STATUS, SR_HINT5);
+#endif
 }
 
 /* note Compiler inserts GP context save + restore code (to current stack).*/
+#ifdef PIC32
+/*
+ * This is a hack - PIC32 uses EIC mode + MCU-ASE, currently the toolchain
+ * does not support correct placement of EIC mode vectors (it is coming though),
+ * But the default PIC interrupt controller defaults to non vectored mode
+ * anyway with all interrupts coming via vector 0 which is equivalent to 'sw0'
+ * in 'VI' mode.
+ *
+ * Thus all PIC32 interrupts should be decoded here (currently only Timer is used)
+ *
+ * When toolchain support is available we could move to full vector mode but this
+ * does take up significant space (MCU-ASE provides 256 vectors at 32B spacing(the
+ * default) thats 8KB of vector space!), So a single entry point may be better
+ * anyway.
+ *
+ * The PIC interrupt controller is configured in the 'board' files currently.
+ */
+void __attribute__ ((interrupt("vector=sw0"),keep_interrupts_masked)) _mips_isr_sw0(void)
+#else
 void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
+#endif
 {
 	register int cr = mips_getcr();
 	if(cr & CR_TI) {
+	
+#ifdef PIC32
+		/* ACK The timer interrupt*/
+		volatile uint32_t * const _IFS0 = (uint32_t *) 0xbf810040;
+		*_IFS0 = 0;
+#endif
+		
 
-		asm volatile("di");
+		uint32_t status = irq_arch_disable();
 		counter += TIMER_ACCURACY;
-		asm volatile("ei");
+		irq_arch_restore(status);
 
 		if(counter == compares[0]) {
 			/*

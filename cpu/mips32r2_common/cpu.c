@@ -1,6 +1,7 @@
 #include <mips/m32c0.h>
 #include <mips/regdef.h>
 #include <mips/asm.h>
+#include <string.h>
 
 #include "periph/uart.h"
 #include "cpu.h"
@@ -16,6 +17,12 @@ extern void atexit(void (*)(void));
 extern void _init(void);
 extern void exit(int);
 
+#ifdef FLASH_XIP
+extern char _rom_data_copy __attribute__((section("data")));
+extern char _fdata __attribute__((section("data")));
+extern char _edata __attribute__((section("data")));
+#endif
+
 /*
  * Note the mips toolchain crt expects to jump to main but RIOT wants the user
  * code to start at main for some perverse reason, but thankfully then crt
@@ -25,6 +32,11 @@ extern void exit(int);
  */
 void software_init_hook(void)
 {
+#ifdef FLASH_XIP
+	//copy initialised data from its LMA to VMA
+	memcpy(&_fdata,&_rom_data_copy,(int)&_edata-(int)&_fdata);
+#endif
+
 	atexit(_fini);
 	_init();
 
@@ -33,11 +45,6 @@ void software_init_hook(void)
 	exit(-1);
 }
 
-void cpu_init_early(void)
-{
-	/* Enable CP0 + CP1 */
-	mips32_set_c0(C0_STATUS, SR_CU1 | SR_CU0);
-}
 
 void mips_start(void)
 {
