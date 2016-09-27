@@ -24,6 +24,8 @@ void board_init(void)
 	*_ODCFCLR = 0xa;
 
 	/* intialise UART used for debug (printf) */
+#ifdef DEBUG_VIA_UART
 	uart_init(DEBUG_VIA_UART,9600,NULL,0);
+#endif
 }
 

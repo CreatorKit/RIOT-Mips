@@ -70,10 +70,15 @@ int timer_init(tim_t dev, unsigned long freq, timer_cb_t cb, void *arg)
 	mips32_bc_c0(C0_CAUSE, CR_DC);
 
 	/* Enable Timer Interrupts */
-#ifdef PIC32
+#if defined (PIC32MX) || defined(PIC32MZ)
+
+#ifdef PIC32MZ
 	volatile uint32_t * const _IEC0_SET = (uint32_t *) 0xbf8100c8;
 	volatile uint32_t * const _IPC0 = (uint32_t *) 0xbf810140;
-
+#else /*MX*/
+	volatile uint32_t * const _IEC0_SET = (uint32_t *) 0xbf881068;
+	volatile uint32_t * const _IPC0 = (uint32_t *) 0xbf881090;
+#endif
 	/* Enable IRQ 0 CPU timer interrupt */
 	*_IEC0_SET = 0x1;
 
@@ -160,8 +165,12 @@ void timer_stop(tim_t dev)
 
 void timer_irq_enable(tim_t dev)
 {
-#ifdef PIC32
+#if defined (PIC32MX) || defined(PIC32MZ)
+#ifdef PIC32MZ
 	volatile uint32_t * const _IEC0_SET = (uint32_t *) 0xbf8100c8;
+#else /*MX*/
+	volatile uint32_t * const _IEC0_SET = (uint32_t *) 0xbf881068;
+#endif
 	*_IEC0_SET = 0x1;
 #else
 	mips32_bs_c0(C0_STATUS, SR_HINT5);
@@ -170,8 +179,12 @@ void timer_irq_enable(tim_t dev)
 
 void timer_irq_disable(tim_t dev)
 {
-#ifdef PIC32
+#if defined (PIC32MX) || defined(PIC32MZ)
+#ifdef PIC32MZ
 	volatile uint32_t * const _IEC0_CLR = (uint32_t *) 0xbf8100c4;
+#else /*MX*/
+	volatile uint32_t * const _IEC0_CLR = (uint32_t *) 0xbf881064;
+#endif
 	*_IEC0_CLR = 0x1;
 #else
 	mips32_bc_c0(C0_STATUS, SR_HINT5);
@@ -179,7 +192,7 @@ void timer_irq_disable(tim_t dev)
 }
 
 /* note Compiler inserts GP context save + restore code (to current stack).*/
-#ifdef PIC32
+#if defined (PIC32MX) || defined(PIC32MZ)
 /*
  * This is a hack - PIC32 uses EIC mode + MCU-ASE, currently the toolchain
  * does not support correct placement of EIC mode vectors (it is coming though),
@@ -203,9 +216,13 @@ void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
 	register int cr = mips_getcr();
 	if(cr & CR_TI) {
 	
-#ifdef PIC32
+#if defined(PIC32MX) || defined(PIC32MZ)
 		/* ACK The timer interrupt*/
+#ifdef PIC32MZ
 		volatile uint32_t * const _IFS0_CLR = (uint32_t *) 0xbf810044;
+#else /*MX*/
+		volatile uint32_t * const _IFS0_CLR = (uint32_t *) 0xbf881034;
+#endif
 		*_IFS0_CLR = 0x1;
 #endif
 		

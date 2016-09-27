@@ -79,7 +79,7 @@ void thread_arch_start_threading(void)
 
 	/*
 	 * Set Exception level if we are not already running at it
-	 * the ERL mode depends on the bootloader.
+	 * the EXL mode depends on the bootloader.
 	 */
 
 	if((status & C0_STATUS_EXL) == 0)
