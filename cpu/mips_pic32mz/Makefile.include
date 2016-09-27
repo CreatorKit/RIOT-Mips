@@ -23,7 +23,7 @@ export ASFLAGS += $(CFLAGS_CPU) $(CFLAGS_DBG)
 export LINKFLAGS += $(MIPS_HAL_LDFLAGS) -mabi=$(ABI) -Wl,--defsym,__use_excpt_boot=0
 export LINKFLAGS += -T$(RIOTCPU)/$(CPU)/ldscripts/pic32mz2048_uhi.ld
 export LINKFLAGS += $(CFLAGS_CPU) $(CFLAGS_DBG) #$(CFLAGS_OPT)
-export LINKFLAGS += -Wl,--gc-sections 
+export LINKFLAGS += -Wl,--print-gc-sections #-Wl,--no-gc-sections #DONT GARBAGE COLLECT AS WE NEED TO KEEP THE CONFIG SETTINGS
 
 # This CPU implementation is using the new core/CPU interface:
 export CFLAGS += -DCOREIF_NG=1
