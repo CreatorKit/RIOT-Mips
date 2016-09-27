@@ -70,7 +70,16 @@ int timer_init(tim_t dev, unsigned long freq, timer_cb_t cb, void *arg)
 	mips32_bc_c0(C0_CAUSE, CR_DC);
 
 	/* Enable Timer Interrupts */
-#ifndef PIC32
+#ifdef PIC32
+	volatile uint32_t * const _IEC0_SET = (uint32_t *) 0xbf8100c8;
+	volatile uint32_t * const _IPC0 = (uint32_t *) 0xbf810140;
+
+	/* Enable IRQ 0 CPU timer interrupt */
+	*_IEC0_SET = 0x1;
+
+	/* Set IRQ 0 to priority 1.0 */
+	*_IPC0 = 0x4;
+#else
 	mips32_bs_c0(C0_STATUS, SR_HINT5);
 #endif
 
@@ -151,14 +160,20 @@ void timer_stop(tim_t dev)
 
 void timer_irq_enable(tim_t dev)
 {
-#ifndef PIC32
+#ifdef PIC32
+	volatile uint32_t * const _IEC0_SET = (uint32_t *) 0xbf8100c8;
+	*_IEC0_SET = 0x1;
+#else
 	mips32_bs_c0(C0_STATUS, SR_HINT5);
 #endif
 }
 
 void timer_irq_disable(tim_t dev)
 {
-#ifndef PIC32
+#ifdef PIC32
+	volatile uint32_t * const _IEC0_CLR = (uint32_t *) 0xbf8100c4;
+	*_IEC0_CLR = 0x1;
+#else
 	mips32_bc_c0(C0_STATUS, SR_HINT5);
 #endif
 }
@@ -179,7 +194,6 @@ void timer_irq_disable(tim_t dev)
  * default) thats 8KB of vector space!), So a single entry point may be better
  * anyway.
  *
- * The PIC interrupt controller is configured in the 'board' files currently.
  */
 void __attribute__ ((interrupt("vector=sw0"),keep_interrupts_masked)) _mips_isr_sw0(void)
 #else
@@ -191,8 +205,8 @@ void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
 	
 #ifdef PIC32
 		/* ACK The timer interrupt*/
-		volatile uint32_t * const _IFS0 = (uint32_t *) 0xbf810040;
-		*_IFS0 = 0;
+		volatile uint32_t * const _IFS0_CLR = (uint32_t *) 0xbf810044;
+		*_IFS0_CLR = 0x1;
 #endif
 		
 

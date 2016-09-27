@@ -25,8 +25,8 @@ extern char _edata __attribute__((section("data")));
 
 /*
  * Note the mips toolchain crt expects to jump to main but RIOT wants the user
- * code to start at main for some perverse reason, but thankfully then crt
- * does provide this hook function which get called fairly close to the jump
+ * code to start at main for some perverse reason, but thankfully the crt
+ * does provide this hook function which gets called fairly close to the jump
  * to main, thus if we finish off the job of the crt here and never returns
  * we can support this madness.
  */
