@@ -1,17 +1,18 @@
-#ifndef CPU_H_
-#define CPU_H_
-
-#include <stdio.h>
-#include <inttypes.h>
-#include <assert.h>
-
-
-#include "irq.h"
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+#ifndef _CPU_H_
+#define _CPU_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include <stdio.h>
+#include <inttypes.h>
+#include <assert.h>
+#include "irq.h"
 
 /* We run from flash on PIC32 */
 #define FLASH_XIP 1

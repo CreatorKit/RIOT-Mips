@@ -1,3 +1,8 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #include <mips/cpu.h>
 #include <mips/hal.h>
 #include <unistd.h>
@@ -6,7 +11,7 @@
 #include "thread.h"
 #include "cpu.h"
 #include "cpu_conf.h"
-#include "periph_conf.h" //for debug uart number.
+#include "periph_conf.h" /* for debug uart number */
 #include "periph/uart.h"
 
 #define STACK_END_PAINT 0xdeadc0de
@@ -134,7 +139,7 @@ _mips_handle_exception(struct gpctx *ctx, int exception)
 				uint32_t status = irq_arch_disable();
 				uart_write(DEBUG_VIA_UART,(uint8_t*)ctx->a[1],ctx->a[2]);
 				ctx->v[0] = ctx->a[2];
-				ctx->epc += 4; /*move PC past the syscall */
+				ctx->epc += 4; /* move PC past the syscall */
 				irq_arch_restore(status);
 				return;
 			}
@@ -165,14 +170,15 @@ _mips_handle_exception(struct gpctx *ctx, int exception)
 				sbuf->st_spare4[1] = 0;
 				/* return 0 */
 				ctx->v[0] = 0;
-				ctx->epc += 4; /*move PC past the syscall */
+				ctx->epc += 4; /* move PC past the syscall */
 				return;
 			}
 		}
 		else
 #endif
 		if(syscall_num == 2) {
-			/* Syscall 1 is reserved for UHI.
+			/*
+			 * Syscall 1 is reserved for UHI.
 			 *
 			 * save the stack pointer in the thread info
 			 * note we want the saved value to include the
@@ -190,7 +196,7 @@ _mips_handle_exception(struct gpctx *ctx, int exception)
 			return_instruction = *((unsigned int *)(new_ctx->epc));
 
 			if((return_instruction & 0xfc00003f) == 0xC) /* syscall */
-				new_ctx->epc += 4; /*move PC past the syscall */
+				new_ctx->epc += 4; /* move PC past the syscall */
 
 			/*
 			 * The toolchain Exception restore code just wholesale copies the
@@ -216,7 +222,7 @@ _mips_handle_exception(struct gpctx *ctx, int exception)
 		}
 		break;
 
-		/*default:*/
+		/* default: */
 	}
 	/* Pass all other exceptions through to the toolchain handler */
 	__exception_handle(ctx, exception);

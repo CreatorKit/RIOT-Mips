@@ -1,3 +1,14 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
+#ifndef _BOARD_H_
+#define _BOARD_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Peripheral clock frequency need for UART baud rate calculation */
 #define PERIPHERAL_CLOCK 100000000  /* Hz */
@@ -7,3 +18,11 @@
 
 /* PIC32 Interrupt Routing */
 #define PIC32MZ 1
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif /* _BOARD_H_ */
+

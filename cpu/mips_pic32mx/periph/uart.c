@@ -1,3 +1,9 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
+
 #include "periph/uart.h"
 #include "board.h"
 
@@ -23,6 +29,9 @@
 #define UxRXREG(U)  U.regs[0x30/4]
 #define UxBRG(U)    U.regs[0x40/4]
 #define UART_BASE   0xBF806000
+#define UART_REGS_SPACING 0x200
+
+/* PERIPHERAL_CLOCK must be defined in board file */
 
 
 typedef struct PIC32_UART_tag {
@@ -40,7 +49,7 @@ int uart_init(uart_t uart, uint32_t baudrate, uart_rx_cb_t rx_cb, void *arg)
 
 	/* Pin Mux should be setup in board file */
 
-	pic_uart[uart].regs = (volatile uint32_t*)(UART_BASE + (uart-1) * 0x200);
+	pic_uart[uart].regs = (volatile uint32_t*)(UART_BASE + (uart-1) * UART_REGS_SPACING);
 	pic_uart[uart].clock = PERIPHERAL_CLOCK;
 
 

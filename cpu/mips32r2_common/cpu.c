@@ -1,3 +1,8 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #include <mips/m32c0.h>
 #include <mips/regdef.h>
 #include <mips/asm.h>

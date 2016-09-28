@@ -1,12 +1,11 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #include <mips/m32c0.h>
 #include "arch/irq_arch.h"
 
-/*
- NO IRQ stack Yet.
-
- #define ISR_STACK_SIZE 4096
- __attribute__ ((aligned (8))) int __isr_stack[ISR_STACK_SIZE/sizeof(int)];
- */
 
 unsigned int irq_arch_enable(void)
 {

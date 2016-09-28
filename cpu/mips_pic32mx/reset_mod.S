@@ -28,6 +28,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
 */
 
+/* ************ PLEASE READ ME !!!!  ****************
+
+	This file is a copy of the reset_mod.S from $MIPS_ELF_ROOT/share/mips/boot
+	(from the 2016.05-03 version) with a couple of modifications:
+
+	#define SKIP_COPY_TO_RAM - prevents the bootloader copying the whole contents
+	of flash to ram (as we want to XIP from flash), we copy initialised data from
+	flash to ram in 'software_init_hook'.
+
+	move .org's to before the labels to make the vector labels appear at the vector
+	addresses.
+
+	In boot_debug_exception vector drop out of debug mode before spining, this allows
+	attachment of an external debug program to investigate a hung system.
+
+	Future toolchain versions will have these changes included and this file will
+	be no longer needed.
+
+	Thanks for reading.
+*/
+
+
+
 #define _RESETCODE
 .set nomips16
 
@@ -200,15 +223,17 @@ LEAF(__boot_general_exception)
     sdbbp 1				# Invoke UHI operation
 END(__boot_general_exception)
 
-# If you want the above code to fit into 1k flash you will need to leave out the
-# code below. This is the code that covers the debug exception which you normally will not get.
+# If you want the above code to fit into 1k flash you will need to leave
+# out the code below. This is the code that covers the debug exception
+#which you normally will not get.
 .org 0x480
 LEAF(__boot_debug_exception)
 	# EJTAG Debug (with ProbEn = 0 in the EJTAG Control Register)
     mfc0 k1, C0_DEPC	# Save Debug exception point in DESAVE
     mtc0 k1, C0_DESAVE
     LA k1, 1f
-    mtc0 k1, C0_DEPC   # Drop out of debug mode before spinning (To allow a JTAG probe in).
+	# Drop out of debug mode before spinning (To allow a JTAG probe in).
+    mtc0 k1, C0_DEPC
     ehb
     deret
 1:

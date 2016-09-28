@@ -1,3 +1,8 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #include <stdint.h>
 
 /*

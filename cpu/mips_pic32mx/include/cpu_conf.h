@@ -1,5 +1,10 @@
-#ifndef CPU_CONF_H_
-#define CPU_CONF_H_
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
+#ifndef _CPU_CONF_H_
+#define _CPU_CONF_H_
 
 #ifdef __cplusplus
 extern "C" {

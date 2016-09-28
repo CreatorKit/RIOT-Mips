@@ -1,5 +1,9 @@
-#include <stdio.h>
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
 
+#include <stdio.h>
 #include "periph/uart.h"
 
 void board_init(void)

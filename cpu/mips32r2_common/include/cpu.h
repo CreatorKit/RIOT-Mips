@@ -1,14 +1,19 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #ifndef CPU_H_
 #define CPU_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdio.h>
 #include <inttypes.h>
 
 #include "irq.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* This file must exist else RIOT won't compile */
 

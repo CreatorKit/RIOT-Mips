@@ -1,3 +1,8 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #include <mips/cpu.h>
 #include <mips/m32c0.h>
 #include <mips/regdef.h>
@@ -195,17 +200,18 @@ void timer_irq_disable(tim_t dev)
 #if defined (PIC32MX) || defined(PIC32MZ)
 /*
  * This is a hack - PIC32 uses EIC mode + MCU-ASE, currently the toolchain
- * does not support correct placement of EIC mode vectors (it is coming though),
+ * does not support correct placement of EIC mode vectors (it is coming though)
  * But the default PIC interrupt controller defaults to non vectored mode
  * anyway with all interrupts coming via vector 0 which is equivalent to 'sw0'
  * in 'VI' mode.
  *
- * Thus all PIC32 interrupts should be decoded here (currently only Timer is used)
+ * Thus all PIC32 interrupts should be decoded here (currently only Timer is
+ * used)
  *
- * When toolchain support is available we could move to full vector mode but this
- * does take up significant space (MCU-ASE provides 256 vectors at 32B spacing(the
- * default) thats 8KB of vector space!), So a single entry point may be better
- * anyway.
+ * When toolchain support is available we could move to full vector mode but
+ * this does take up significant space (MCU-ASE provides 256 vectors at 32B
+ * spacing (the default) thats 8KB of vector space!), So a single entry point
+ * may be better anyway.
  *
  */
 void __attribute__ ((interrupt("vector=sw0"),keep_interrupts_masked)) _mips_isr_sw0(void)
@@ -232,13 +238,13 @@ void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
 		irq_arch_restore(status);
 
 		if(counter == compares[0]) {
-			/*
-			 * The Xtimer code expects the ISR to take some time
-			 * but our counter is a fake software one, so bump it a
-			 * bit to give the impression some time elapsed in the ISR.
-			 * Without this the callback ( _shoot(timer) on xtimer_core.c )
-			 * never fires.
-			 */
+		/*
+		 * The Xtimer code expects the ISR to take some time
+		 * but our counter is a fake software one, so bump it a
+		 * bit to give the impression some time elapsed in the ISR.
+		 * Without this the callback ( _shoot(timer) on xtimer_core.c )
+		 * never fires.
+		 */
 			counter += TIMER_ACCURACY;
 			timer_isr_ctx.cb(timer_isr_ctx.arg, 0);
 

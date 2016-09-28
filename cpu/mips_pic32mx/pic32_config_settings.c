@@ -1,7 +1,9 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
 #include <stdint.h>
-
-
-
 /*
  *  DEVCFG3  @ 0x1FC02FF0
  * 
@@ -32,7 +34,7 @@ volatile uint32_t DEVCFG3 __attribute__((used,section(".devcfg3"))) = 0x86FFFFFF
  *	FPLLODIV	DIV_1		System PLL Output Clock Divider	1x Divider
  */ 
  
-volatile uint32_t DEVCFG4 __attribute__ ((used,section(".devcfg2"))) = 0xFFF8F888;
+volatile uint32_t DEVCFG2 __attribute__ ((used,section(".devcfg2"))) = 0xFFF8F888;
 
 
 /*

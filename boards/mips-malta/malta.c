@@ -1,3 +1,10 @@
+/*
+ * Copyright 2016, Imagination Technologies Limited and/or its
+ *                 affiliated group companies.
+ */
+
+
+
 #include <stdio.h>
 
 #include "periph/uart.h"
@@ -13,7 +20,7 @@ static void malta_reset(void)
 
 void board_init(void)
 {
-	/* TODO */
+
 }
 
 void reboot(void)
