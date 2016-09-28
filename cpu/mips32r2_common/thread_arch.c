@@ -2,14 +2,15 @@
  * Copyright 2016, Imagination Technologies Limited and/or its
  *                 affiliated group companies.
  */
-
 #include <mips/cpu.h>
 #include <mips/hal.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <stdio.h>
 
 #include "thread.h"
 #include "cpu.h"
+#include "irq.h"
 #include "cpu_conf.h"
 #include "periph_conf.h" /* for debug uart number */
 #include "periph/uart.h"

@@ -20,4 +20,4 @@ extern "C" {
 }
 #endif
 
-#endif _PERIPH_CONF_H_
+#endif /*_PERIPH_CONF_H_*/
