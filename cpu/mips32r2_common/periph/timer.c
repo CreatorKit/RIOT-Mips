@@ -53,7 +53,7 @@ int timer_init(tim_t dev, unsigned long freq, timer_cb_t cb, void *arg)
 {
 	int i;
 
-	if(dev != 0) {
+	if (dev != 0) {
 		return -1;
 	}
 
@@ -63,8 +63,9 @@ int timer_init(tim_t dev, unsigned long freq, timer_cb_t cb, void *arg)
 	timer_isr_ctx.arg = arg;
 
 	/* Clear down soft counters */
-	for(i = 0; i < CHANNELS; i++)
+	for (i = 0; i < CHANNELS; i++) {
 		compares[i] = 0;
+	}
 
 	counter = 1 << TIMER_ACCURACY_SHIFT;
 
@@ -98,12 +99,13 @@ int timer_init(tim_t dev, unsigned long freq, timer_cb_t cb, void *arg)
 
 int timer_set(tim_t dev, int channel, unsigned int timeout)
 {
-	if(dev != 0) {
+	if (dev != 0) {
 		return -1;
 	}
 
-	if(channel >= CHANNELS)
+	if (channel >= CHANNELS) {
 		return -1;
+	}
 
 	timeout >>= TIMER_ACCURACY_SHIFT;
 	timeout <<= TIMER_ACCURACY_SHIFT;
@@ -117,12 +119,13 @@ int timer_set(tim_t dev, int channel, unsigned int timeout)
 
 int timer_set_absolute(tim_t dev, int channel, unsigned int value)
 {
-	if(dev != 0) {
+	if (dev != 0) {
 		return -1;
 	}
 
-	if(channel >= CHANNELS)
+	if (channel >= CHANNELS) {
 		return -1;
+	}
 
 	value >>= TIMER_ACCURACY_SHIFT;
 	value <<= TIMER_ACCURACY_SHIFT;
@@ -136,12 +139,13 @@ int timer_set_absolute(tim_t dev, int channel, unsigned int value)
 
 int timer_clear(tim_t dev, int channel)
 {
-	if(dev != 0) {
+	if (dev != 0) {
 		return -1;
 	}
 
-	if(channel >= CHANNELS)
+	if (channel >= CHANNELS) {
 		return -1;
+	}
 
 	uint32_t status = irq_arch_disable();
 	compares[channel] = 0;
@@ -152,7 +156,7 @@ int timer_clear(tim_t dev, int channel)
 
 unsigned int timer_read(tim_t dev)
 {
-	if(dev != 0) {
+	if (dev != 0) {
 		return -1;
 	}
 	return counter;
@@ -214,14 +218,14 @@ void timer_irq_disable(tim_t dev)
  * may be better anyway.
  *
  */
-void __attribute__ ((interrupt("vector=sw0"),keep_interrupts_masked)) _mips_isr_sw0(void)
+void __attribute__ ((interrupt("vector=sw0"), keep_interrupts_masked)) _mips_isr_sw0(void)
 #else
 void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
 #endif
 {
 	register int cr = mips_getcr();
-	if(cr & CR_TI) {
-	
+	if (cr & CR_TI) {
+
 #if defined(PIC32MX) || defined(PIC32MZ)
 		/* ACK The timer interrupt*/
 #ifdef PIC32MZ
@@ -231,13 +235,13 @@ void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
 #endif
 		*_IFS0_CLR = 0x1;
 #endif
-		
+
 
 		uint32_t status = irq_arch_disable();
 		counter += TIMER_ACCURACY;
 		irq_arch_restore(status);
 
-		if(counter == compares[0]) {
+		if (counter == compares[0]) {
 		/*
 		 * The Xtimer code expects the ISR to take some time
 		 * but our counter is a fake software one, so bump it a
@@ -248,16 +252,16 @@ void __attribute__ ((interrupt("vector=hw5"))) _mips_isr_hw5(void)
 			counter += TIMER_ACCURACY;
 			timer_isr_ctx.cb(timer_isr_ctx.arg, 0);
 
-			if(sched_context_switch_request)
+			if (sched_context_switch_request)
 				thread_yield();
 		}
-		if(counter == compares[1]) {
+		if (counter == compares[1]) {
 			timer_isr_ctx.cb(timer_isr_ctx.arg, 1);
 
-			if(sched_context_switch_request)
+			if (sched_context_switch_request)
 				thread_yield();
 		}
-		if(counter == compares[2]) {
+		if (counter == compares[2]) {
 			timer_isr_ctx.cb(timer_isr_ctx.arg, 2);
 
 			if(sched_context_switch_request)

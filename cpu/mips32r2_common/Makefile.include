@@ -10,11 +10,11 @@ include $(MIPS_ELF_ROOT)/share/mips/rules/mipshal.mk
 
 # define build specific options
 export CFLAGS_CPU   = -EL -march=mips32r2 -msoft-float
-export CFLAGS_LINK  = -ffunction-sections -fdata-sections -fno-builtin -fshort-enums 
+export CFLAGS_LINK  = -ffunction-sections -fdata-sections -fno-builtin -fshort-enums
 export CFLAGS_DBG = -O0 -g2
 export CFLAGS_OPT = -Os
 
-export CFLAGS += $(CFLAGS_CPU) $(CFLAGS_LINK) $(CFLAGS_DBG) 
+export CFLAGS += $(CFLAGS_CPU) $(CFLAGS_LINK) $(CFLAGS_DBG)
 #$(CFLAGS_OPT)
 
 export ASFLAGS += $(CFLAGS_CPU) $(CFLAGS_DBG)

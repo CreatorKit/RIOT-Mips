@@ -39,8 +39,8 @@ PROVIDE (__memory_size = 512K);
 /* Base of the memory returned by _get_ram_range */
 PROVIDE (__memory_base = 0x80000000);
 
-/* Stride length for tlb software invalidate for tlbinvf 
- * (mipsXXr3+). Some MIPS implementations may layout the sets/ways 
+/* Stride length for tlb software invalidate for tlbinvf
+ * (mipsXXr3+). Some MIPS implementations may layout the sets/ways
  * differently in the index register. Either sets LSB or ways LSB.
  *
  * By setting this to 1 we presume that sets come first. The default boot
@@ -126,7 +126,7 @@ SECTIONS
   AT (__lower_boot_flash_start)
   {
     __base = .;
-    
+
     *(.reset)		/* Reset entry point. */
     *(.boot)		/* Boot code. */
     . = ALIGN(8);
@@ -140,7 +140,7 @@ SECTIONS
     *(.adevcp0_la)
     . = __base + 0xff6c;
     *(.adevsign_la)
-    
+
     . = __base + 0xffc0; /*Config bits (lower Alias)*/
     *(.devcfg3_la)
     *(.devcfg2_la)
@@ -150,14 +150,14 @@ SECTIONS
     *(.devcp0_la)
     . = __base + 0xffec;
     *(.devsign_la)
-  
+
     . = __base + 0xfff0;
     *(.seq_la)
-  
+
   } = 0xFFFFFFFF
-  
+
   /*
-   * We only add this block to keep the MPLAB programmer happy 
+   * We only add this block to keep the MPLAB programmer happy
    * It seems to want the config regs values in the non aliased locations
    */
   . = __base + 0x40000 + 0xff40;
@@ -165,7 +165,7 @@ SECTIONS
   AT(__boot_flash1_start + 0xff40)
   {
     __altbase = .;
-  
+
     . = __altbase; /* Alternate Config Bits (boot flash 1) */
     *(.adevcfg3_b1)
     *(.adevcfg2_b1)
@@ -188,9 +188,9 @@ SECTIONS
     . = __altbase + 0xB0;
     *(.seq_b1)
    }  = 0xFFFFFFFF
-  
+
   /*
-   * We only add this block to keep the MPLAB programmer happy 
+   * We only add this block to keep the MPLAB programmer happy
    * It seems to want the config regs values in the non aliased locations
    */
   . = __base + 0x60000 + 0xff40;
@@ -198,7 +198,7 @@ SECTIONS
   AT(__boot_flash2_start + 0xff40)
   {
     __altbase = .;
-  
+
     . = __altbase; /* Alternate Config Bits (boot flash 1) */
     *(.adevcfg3_b2)
     *(.adevcfg2_b2)
@@ -209,7 +209,6 @@ SECTIONS
      . = __altbase + 0x2c;
     *(.adevsign_b2)
 
-  
     . = __altbase + 0x80;
     *(.devcfg3_b2)
     *(.devcfg2_b2)
@@ -222,8 +221,7 @@ SECTIONS
     . = __altbase + 0xB0;
     *(.seq_b2)
   } = 0xFFFFFFFF
-  
-  
+
   /* Start of the application */
   .exception_vector ALIGN(__flash_vector_start, 0x1000) :
   AT (__flash_vector_start)
@@ -320,12 +318,12 @@ SECTIONS
     *(.gnu.linkonce.r.*)
   }
   _rom_data_copy = .;
-  
+
   .data ALIGN(__memory_base + 0x1000, 16) :
   AT (_rom_data_copy)
   {
      _fdata = .;
-    
+
       *(.data)
       *(.data.*)
       *(.gnu.linkonce.d.*)
@@ -333,12 +331,9 @@ SECTIONS
     . = ALIGN(8);
     _gp = . + 0x8000;
     __global = _gp;
-    
+
       *(.lit8)
-    
-    
       *(.lit4)
-    
       *(.sdata)
       *(.sdata.*)
       *(.gnu.linkonce.s.*)

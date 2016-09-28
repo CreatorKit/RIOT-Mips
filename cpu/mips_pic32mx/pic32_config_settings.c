@@ -6,17 +6,17 @@
 #include <stdint.h>
 /*
  *  DEVCFG3  @ 0x1FC02FF0
- * 
- * 
- * 	USERID
- * 	FSRSSEL		7	Assign IPL 7 to a shadow register set.
+ *
+ *
+ *	USERID
+ *	FSRSSEL		7	Assign IPL 7 to a shadow register set.
  *	FMIIEN		OFF	Ethernet RMII/MII Enable	RMII Enabled
  *	FETHIO		ON	Ethernet I/O Pin Select	Default Ethernet I/O
  *	FUSBIDIO	OFF	USB USBID Selection	Controlled by Port Function
  *	FVBUSONIO 	ON	VBUSON pin is controlled by the USB module function
 
  */
-volatile uint32_t DEVCFG3 __attribute__((used,section(".devcfg3"))) = 0x86FFFFFF;
+volatile uint32_t DEVCFG3 __attribute__((used, section(".devcfg3"))) = 0x86FFFFFF;
 
 /* Note this sets the PLL to 120MHz which is only supported by 3xx and 4xx parts
  * and assumes an 8MHz XTAL.
@@ -26,20 +26,20 @@ volatile uint32_t DEVCFG3 __attribute__((used,section(".devcfg3"))) = 0x86FFFFFF
  *
  *
  * DEVCFG2  @ 0x1FC02FF4 (
- * 
- * 	FPLLIDIV	DIV_1		System PLL Input Divider	1x Divider
+ *
+ *	FPLLIDIV	DIV_1		System PLL Input Divider	1x Divider
  *	FPLLMUL		15x		System PLL Multiplier	PLL Multiply by 15, 8 x 15 = 120MHz
- * 	UPLLIDIV	DIV_256		USB PLL divider
- * 	UPLLEN		OFF		USB PLL disabled
+ *	UPLLIDIV	DIV_256		USB PLL divider
+ *	UPLLEN		OFF		USB PLL disabled
  *	FPLLODIV	DIV_1		System PLL Output Clock Divider	1x Divider
- */ 
- 
-volatile uint32_t DEVCFG2 __attribute__ ((used,section(".devcfg2"))) = 0xFFF8F888;
+ */
+
+volatile uint32_t DEVCFG2 __attribute__ ((used, section(".devcfg2"))) = 0xFFF8F888;
 
 
 /*
  * DEVCFG1  @ 0x1FC02FF8
- * 
+ *
  * FNOSC	PRIPLL	Oscillator Selection Bits	Primary Osc w/PLL (XT+,HS+,EC+PLL)
  * FSOSCEN	ON	Secondary Oscillator Enable	Enabled
  * IESO	ON	Internal/External Switch Over	Enabled
@@ -50,13 +50,13 @@ volatile uint32_t DEVCFG2 __attribute__ ((used,section(".devcfg2"))) = 0xFFF8F88
  * WINDIS	OFF	Watchdog Timer Window Enable	Watchdog Timer is in Non-Window Mode
  * FWDTEN	OFF	Watchdog Timer Enable	WDT Disabled (SWDTEN Bit Controls)
  */
-  
-volatile uint32_t DEVCFG1 __attribute__ ((used,section(".devcfg1"))) = 0XFF61CDFB;
+
+volatile uint32_t DEVCFG1 __attribute__ ((used, section(".devcfg1"))) = 0XFF61CDFB;
 
 
 /*
  * DEVCFG0  @ 0x1FC02FFC
- * 
+ *
  * DEBUG	OFF		Background Debugger Enable	Debugger is disabled
  * JTAGEN	ON		JTAG Enable	JTAG Port Enabled
  * ICESEL	ICS_PGx1	ICE/ICD Comm Channel Select	Communicate on PGEC1/PGED1
@@ -65,7 +65,7 @@ volatile uint32_t DEVCFG1 __attribute__ ((used,section(".devcfg1"))) = 0XFF61CDF
  * CP	OFF	Code Protect	Protection Disabled
  */
 
-volatile uint32_t DEVCFG0 __attribute__ ((used,section(".devcfg0"))) = 0x7FFFFFFF;
+volatile uint32_t DEVCFG0 __attribute__ ((used, section(".devcfg0"))) = 0x7FFFFFFF;
 
 /*
  * Without a reference to this function from elsewhere LD throws the whole compile unit

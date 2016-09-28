@@ -24,9 +24,9 @@
  *  ADEVCFG3_B1 @ 0x1FC4FF40 (alternate devcfg3 in config space 1)
  *  DEVCFG3_B2  @ 0x1FC6FFC0 (config space 1)
  *  ADEVCFG3_B2 @ 0x1FC6FF40 (alternate devcfg3 in config space 2)
- * 
- * 
- * 	USERID
+ *
+ *
+ *	USERID
  *	FMIIEN		OFF	Ethernet RMII/MII Enable	RMII Enabled
  *	FETHIO		ON	Ethernet I/O Pin Select	Default Ethernet I/O
  *	PGL1WAY		OFF	Permission Group Lock One Way Configuration	Allow multiple reconfigurations
@@ -34,12 +34,12 @@
  *	IOL1WAY		OFF	Peripheral Pin Select Configuration	Allow multiple reconfigurations
  *	FUSBIDIO	OFF	USB USBID Selection	Controlled by Port Function
  */
-volatile uint32_t DEVCFG3_LA __attribute__((used,section(".devcfg3_la"))) = 0x86FFFFFF;
-volatile uint32_t ADEVCFG3_LA __attribute__((used,section(".adevcfg3_la"))) = 0x86FFFFFF;
-volatile uint32_t DEVCFG3_B1 __attribute__((used,section(".devcfg3_b1"))) = 0x86FFFFFF;
-volatile uint32_t ADEVCFG3_B1 __attribute__((used,section(".adevcfg3_b1"))) = 0x86FFFFFF;
-// volatile uint32_t DEVCFG3_B2 __attribute__((used,section(".devcfg3_b2"))) = 0x86FFFFFF; Not needed by default.
-// volatile uint32_t ADEVCFG3_B2 __attribute__((used,section(".adevcfg3_la"))) = 0x86FFFFFF; Not needed by default
+volatile uint32_t DEVCFG3_LA  __attribute__((used, section(".devcfg3_la"))) = 0x86FFFFFF;
+volatile uint32_t ADEVCFG3_LA __attribute__((used, section(".adevcfg3_la"))) = 0x86FFFFFF;
+volatile uint32_t DEVCFG3_B1  __attribute__((used, section(".devcfg3_b1"))) = 0x86FFFFFF;
+volatile uint32_t ADEVCFG3_B1 __attribute__((used, section(".adevcfg3_b1"))) = 0x86FFFFFF;
+/* volatile uint32_t DEVCFG3_B2 __attribute__((used,section(".devcfg3_b2"))) = 0x86FFFFFF; Not needed by default. */
+/* volatile uint32_t ADEVCFG3_B2 __attribute__((used,section(".adevcfg3_la"))) = 0x86FFFFFF; Not needed by default */
 
 /*
  * DEVCFG2_LA  @ 0x1FC0FFC4 (lower alias)
@@ -48,21 +48,21 @@ volatile uint32_t ADEVCFG3_B1 __attribute__((used,section(".adevcfg3_b1"))) = 0x
  * ADEVCFG2_B1 @ 0x1FC4FF44 (alternate devcfg2 in config space 1)
  * DEVCFG2_B2  @ 0x1FC6FFC4 (config space 1)
  * ADEVCFG2_B2 @ 0x1FC6FF44 (alternate devcfg2 in config space 2)
- * 
- * 	FPLLIDIV	DIV_3		System PLL Input Divider	3x Divider
+ *
+ *	FPLLIDIV	DIV_3		System PLL Input Divider	3x Divider
  *	FPLLRNG		RANGE_5_10_MHZ	System PLL Input Range	5-10 MHz Input
  *	FPLLICLK	PLL_POSC	System PLL Input Clock Selection	POSC is input to the System PLL
  *	FPLLMULT	MUL_50		System PLL Multiplier	PLL Multiply by 50
  *	FPLLODIV	DIV_2		System PLL Output Clock Divider	2x Divider
  *	UPLLFSEL	FREQ_24MHZ	USB PLL Input Frequency Selection	USB PLL input is 24 MHz
- */ 
- 
-volatile uint32_t DEVCFG2_LA __attribute__ ((used,section(".devcfg2_la"))) = 0xFFF9B11A;
-volatile uint32_t ADEVCFG2_LA __attribute__ ((used,section(".adevcfg2_la"))) = 0xFFF9B11A;
-volatile uint32_t DEVCFG2_B1 __attribute__ ((used,section(".devcfg2_b1"))) = 0xFFF9B11A;
-volatile uint32_t ADEVCFG2_B1 __attribute__ ((used,section(".adevcfg2_b1"))) = 0xFFF9B11A;
-//uint32_t DEVCFG2_B2 __attribute__ ((section(".devcfg2_b2"))) = 0xFFF9B11A; Not needed by default.
-//uint32_t ADEVCFG2_B2 __attribute__ ((section(".adevcfg2_b2"))) = 0xFFF9B11A; Not needed by default.
+ */
+
+volatile uint32_t DEVCFG2_LA  __attribute__ ((used, section(".devcfg2_la"))) = 0xFFF9B11A;
+volatile uint32_t ADEVCFG2_LA __attribute__ ((used, section(".adevcfg2_la"))) = 0xFFF9B11A;
+volatile uint32_t DEVCFG2_B1  __attribute__ ((used, section(".devcfg2_b1"))) = 0xFFF9B11A;
+volatile uint32_t ADEVCFG2_B1 __attribute__ ((used, section(".adevcfg2_b1"))) = 0xFFF9B11A;
+/* uint32_t DEVCFG2_B2 __attribute__ ((section(".devcfg2_b2"))) = 0xFFF9B11A; Not needed by default. */
+/* uint32_t ADEVCFG2_B2 __attribute__ ((section(".adevcfg2_b2"))) = 0xFFF9B11A; Not needed by default. */
 
 
 /*
@@ -72,7 +72,7 @@ volatile uint32_t ADEVCFG2_B1 __attribute__ ((used,section(".adevcfg2_b1"))) = 0
  * ADEVCFG1_B1 @ 0x1FC4FF48 (alternate devcfg1 in config space 1)
  * DEVCFG1_B2  @ 0x1FC6FFC8 (config space 1)
  * ADEVCFG1_B2 @ 0x1FC6FF48 (alternate devcfg1 in config space 2)
- * 
+ *
  * 	FNOSC		SPLL		Oscillator Selection Bits	System PLL
  *	DMTINTV		WIN_127_128	DMT Count Window Interval	Window/Interval value is 127/128 counter value
  *	FSOSCEN		OFF		Secondary Oscillator Enable	Disable SOSC
@@ -88,13 +88,13 @@ volatile uint32_t ADEVCFG2_B1 __attribute__ ((used,section(".adevcfg2_b1"))) = 0
  *	DMTCNT		DMT8		Deadman Timer Count Selection	2^8 (256)
  *	FDMTEN		OFF		Deadman Timer Enable	Deadman Timer is disabled
  */
-  
-volatile uint32_t DEVCFG1_LA __attribute__ ((used,section(".devcfg1_la"))) = 0x3743CB9;
-volatile uint32_t ADEVCFG1_LA __attribute__ ((used,section(".adevcfg1_la"))) = 0x3743CB9;
-volatile uint32_t DEVCFG1_B1 __attribute__ ((used,section(".devcfg1_b1"))) = 0x3743CB9;
-volatile uint32_t ADEVCFG1_B1 __attribute__ ((used,section(".adevcfg1_b1"))) = 0x3743CB9;
-//uint32_t DEVCFG1_B2 __attribute__ ((section(".devcfg1_b2"))) = 0x3743CB9;
-//uint32_t ADEVCFG1_B2 __attribute__ ((section(".adevcfg1_b2"))) = 0x3743
+
+volatile uint32_t DEVCFG1_LA  __attribute__ ((used, section(".devcfg1_la"))) = 0x3743CB9;
+volatile uint32_t ADEVCFG1_LA __attribute__ ((used, section(".adevcfg1_la"))) = 0x3743CB9;
+volatile uint32_t DEVCFG1_B1  __attribute__ ((used, section(".devcfg1_b1"))) = 0x3743CB9;
+volatile uint32_t ADEVCFG1_B1 __attribute__ ((used, section(".adevcfg1_b1"))) = 0x3743CB9;
+/* uint32_t DEVCFG1_B2 __attribute__ ((section(".devcfg1_b2"))) = 0x3743CB9; */
+/* uint32_t ADEVCFG1_B2 __attribute__ ((section(".adevcfg1_b2"))) = 0x3743 */
 
 /*
  * DEVCFG0_LA  @ 0x1FC0FFCC (lower alias)
@@ -103,7 +103,7 @@ volatile uint32_t ADEVCFG1_B1 __attribute__ ((used,section(".adevcfg1_b1"))) = 0
  * ADEVCFG0_B1 @ 0x1FC4FF4C (alternate devcfg0 in config space 1)
  * DEVCFG0_B2  @ 0x1FC6FFCC (config space 1)
  * ADEVCFG0_B2 @ 0x1FC6FF4C (alternate devcfg0 in config space 2)
- * 
+ *
  * DEBUG	OFF		Background Debugger Enable	Debugger is disabled
  * JTAGEN	ON		JTAG Enable	JTAG Port Enabled
  * ICESEL	ICS_PGx2	ICE/ICD Comm Channel Select	Communicate on PGEC2/PGED2
@@ -120,62 +120,62 @@ volatile uint32_t ADEVCFG1_B1 __attribute__ ((used,section(".adevcfg1_b1"))) = 0
  * EJTAGBEN	NORMAL		EJTAG Boot	Normal EJTAG functionality
  */
 
-volatile uint32_t DEVCFG0_LA  __attribute__ ((used,section(".devcfg0_la"))) = 0xFFFFF7D7;
-volatile uint32_t ADEVCFG0_LA  __attribute__ ((used,section(".adevcfg0_la"))) = 0xFFFFF7D7;
-volatile uint32_t DEVCFG0_B1  __attribute__ ((used,section(".devcfg0_b1"))) = 0xFFFFF7D7;
-volatile uint32_t ADEVCFG0_B1  __attribute__ ((used,section(".adevcfg0_b1"))) = 0xFFFFF7D7;
-//uint32_t DEVCFG0_B2  __attribute__ ((section(".devcfg0_b2"))) = 0xFFFFF7D7; Not needed by default
-//uint32_t ADEVCFG0_B2  __attribute__ ((section(".adevcfg0_b2"))) = 0xFFFFF7D7; Not needed by default
+volatile uint32_t DEVCFG0_LA   __attribute__ ((used, section(".devcfg0_la"))) = 0xFFFFF7D7;
+volatile uint32_t ADEVCFG0_LA  __attribute__ ((used, section(".adevcfg0_la"))) = 0xFFFFF7D7;
+volatile uint32_t DEVCFG0_B1   __attribute__ ((used, section(".devcfg0_b1"))) = 0xFFFFF7D7;
+volatile uint32_t ADEVCFG0_B1  __attribute__ ((used, section(".adevcfg0_b1"))) = 0xFFFFF7D7;
+/* uint32_t DEVCFG0_B2  __attribute__ ((section(".devcfg0_b2"))) = 0xFFFFF7D7; Not needed by default */
+/* uint32_t ADEVCFG0_B2  __attribute__ ((section(".adevcfg0_b2"))) = 0xFFFFF7D7; Not needed by default */
 
 
-/* 
+/*
  * DEVCP0_LA  @ 0x1FC0FFDC (lower alias)
  * ADEVCP0_LA @ 0x1FC0FF5C (alternate devcp0 in lower alias)
  * DEVCP0_B1  @ 0x1FC4FFDC (config space 1)
  * ADEVCP0_B1 @ 0x1FC4FF5C (alternate devcp0 in config space 1)
  * DEVCP0_B2  @ 0x1FC6FFDC (config space 1)
  * ADEVCP0_B2 @ 0x1FC6FF5C (alternate devcp0 in config space 2
- * 
+ *
  * CP	OFF	Code Protect	Protection Disabled
  */
- 
-volatile uint32_t DEVCP0_LA	__attribute__ ((used,section(".devcp0_la"))) = 0xFFFFFFFF;
-volatile uint32_t ADEVCP0_LA	__attribute__ ((used,section(".adevcp0_la"))) = 0xFFFFFFFF;
-volatile uint32_t DEVCP0_B1	__attribute__ ((used,section(".devcp0_b1"))) = 0xFFFFFFFF;
-volatile uint32_t ADEVCP0_B1	__attribute__ ((used,section(".adevcp0_b1"))) = 0xFFFFFFFF;
-//uint32_t DEVCP0_B2	__attribute__ ((section(".devcp0_b1"))) = 0xFFFFFFFF; not needed by default
-//uint32_t ADEVCP0_B2	__attribute__ ((section(".adevcp0_b1"))) = 0xFFFFFFFF; not needed by default
+
+volatile uint32_t DEVCP0_LA	__attribute__ ((used, section(".devcp0_la"))) = 0xFFFFFFFF;
+volatile uint32_t ADEVCP0_LA	__attribute__ ((used, section(".adevcp0_la"))) = 0xFFFFFFFF;
+volatile uint32_t DEVCP0_B1	__attribute__ ((used, section(".devcp0_b1"))) = 0xFFFFFFFF;
+volatile uint32_t ADEVCP0_B1	__attribute__ ((used, section(".adevcp0_b1"))) = 0xFFFFFFFF;
+/* uint32_t DEVCP0_B2	__attribute__ ((section(".devcp0_b1"))) = 0xFFFFFFFF; not needed by default */
+/* uint32_t ADEVCP0_B2	__attribute__ ((section(".adevcp0_b1"))) = 0xFFFFFFFF; not needed by default */
 
 /*
  * SEQ_B1[0..3] @ 1FC0FFF0
  * SEQ_B1[0..3] @ 1FC4FFF0
- * 
- * TSEQ		Boot Flash True Sequence Number	
- * CSEQ		Boot Flash Complement Sequence Number	
+ *
+ * TSEQ		Boot Flash True Sequence Number
+ * CSEQ		Boot Flash Complement Sequence Number
  */
 
-volatile uint32_t SEQ_LA[4] __attribute__ ((used,section(".seq_la"))) = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-volatile uint32_t SEQ_B1[4] __attribute__ ((used,section(".seq_b1"))) = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-// uint32_t SEQ_B2[4] __attribute__ ((section(".seq_b2"))) = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF}; Not needed by default
+volatile uint32_t SEQ_LA[4] __attribute__ ((used, section(".seq_la"))) = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+volatile uint32_t SEQ_B1[4] __attribute__ ((used, section(".seq_b1"))) = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+/* uint32_t SEQ_B2[4] __attribute__ ((section(".seq_b2"))) = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF}; Not needed by default */
 
 
 /*
- * STUPIDLY Microchip has hard coded the MSB bit of devsign to 0, So even if you erase the whole device, 
+ * STUPIDLY Microchip has hard coded the MSB bit of devsign to 0, So even if you erase the whole device,
  * eveything returns 0xFFFFFFF except this 1 register (and its alternate) which return 0x7FFFFFF!!
- * 
+ *
  * We set it in the output image so verification doesn't fail
- * 
+ *
  * DEVSIGN0 @ 0xBFC0FFEC
  * ADEVSIGN0 @ 0xBFC0FF6C
- * 
+ *
  */
- 
-volatile uint32_t DEVSIGN_LA  __attribute__ ((used,section(".devsign_la"))) = 0x7FFFFFFF;
-volatile uint32_t ADEVSIGN_LA __attribute__ ((used,section(".adevsign_la"))) = 0x7FFFFFFF;
-volatile uint32_t DEVSIGN_B1  __attribute__ ((used,section(".devsign_b1"))) = 0x7FFFFFFF;
-volatile uint32_t ADEVSIGN_B1 __attribute__ ((used,section(".adevsign_b1"))) = 0x7FFFFFFF;
-volatile uint32_t DEVSIGN_B2  __attribute__ ((used,section(".devsign_b2"))) = 0x7FFFFFFF;
-volatile uint32_t ADEVSIGN_B2 __attribute__ ((used,section(".adevsign_b2"))) = 0x7FFFFFFF;
+
+volatile uint32_t DEVSIGN_LA  __attribute__ ((used, section(".devsign_la"))) = 0x7FFFFFFF;
+volatile uint32_t ADEVSIGN_LA __attribute__ ((used, section(".adevsign_la"))) = 0x7FFFFFFF;
+volatile uint32_t DEVSIGN_B1  __attribute__ ((used, section(".devsign_b1"))) = 0x7FFFFFFF;
+volatile uint32_t ADEVSIGN_B1 __attribute__ ((used, section(".adevsign_b1"))) = 0x7FFFFFFF;
+volatile uint32_t DEVSIGN_B2  __attribute__ ((used, section(".devsign_b2"))) = 0x7FFFFFFF;
+volatile uint32_t ADEVSIGN_B2 __attribute__ ((used, section(".adevsign_b2"))) = 0x7FFFFFFF;
 
 
 /*

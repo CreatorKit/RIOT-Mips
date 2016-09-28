@@ -38,8 +38,8 @@ extern char _edata __attribute__((section("data")));
 void software_init_hook(void)
 {
 #ifdef FLASH_XIP
-	//copy initialised data from its LMA to VMA
-	memcpy(&_fdata,&_rom_data_copy,(int)&_edata-(int)&_fdata);
+	/* copy initialised data from its LMA to VMA */
+	memcpy(&_fdata, &_rom_data_copy, (int)&_edata -(int)&_fdata);
 #endif
 
 	atexit(_fini);
@@ -68,6 +68,6 @@ void panic_arch(void)
 {
 	printf("\nPANIC!\n");
 	assert(0);
-	while(1){}
+	while (1) {}
 }
 

@@ -23,7 +23,7 @@ unsigned int irq_arch_disable(void)
 
 void irq_arch_restore(unsigned int state)
 {
-	if(state & SR_IE) {
+	if (state & SR_IE) {
 		mips32_bs_c0(C0_STATUS, SR_IE);
 	} else {
 		mips32_bc_c0(C0_STATUS, SR_IE);

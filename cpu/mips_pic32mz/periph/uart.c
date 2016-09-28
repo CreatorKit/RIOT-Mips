@@ -3,10 +3,11 @@
  *                 affiliated group companies.
  */
 
+
 #include "periph/uart.h"
 #include "board.h"
 
-#define UxMODE(U)   U.regs[0x00/4]
+#define UxMODE(U)      U.regs[0x00/4]
 #define UxMODECLR(U)   U.regs[0x04/4]
 #define UxMODESET(U)   U.regs[0x04/4]
 #define ON  0x8000
@@ -28,24 +29,27 @@
 #define UxRXREG(U)  U.regs[0x30/4]
 #define UxBRG(U)    U.regs[0x40/4]
 #define UART_BASE   0xBF822000
+#define UART_REGS_SPACING 0x200
+
+/* PERIPHERAL_CLOCK must be defined in board file */
 
 
 typedef struct PIC32_UART_tag {
-	volatile uint32_t* 	regs;
+	volatile uint32_t	*regs;
 	uint32_t		clock;
-}PIC32_UART_T;
+} PIC32_UART_T;
 
 /* pic uarts are numbered 1 to 6 */
-PIC32_UART_T pic_uart[UART_NUMOF +1];
+PIC32_UART_T pic_uart[UART_NUMOF + 1];
 
 int uart_init(uart_t uart, uint32_t baudrate, uart_rx_cb_t rx_cb, void *arg)
 {
-	if(uart > UART_NUMOF || uart == 0) /*No uart 0 on pic32*/
+	if (uart > UART_NUMOF || uart == 0) /*No uart 0 on pic32*/
 		return -1;
 
 	/* Pin Mux should be setup in board file */
 
-	pic_uart[uart].regs = (volatile uint32_t*)(UART_BASE + (uart-1) * 0x200);
+	pic_uart[uart].regs = (volatile uint32_t *)(UART_BASE + (uart-1) * UART_REGS_SPACING);
 	pic_uart[uart].clock = PERIPHERAL_CLOCK;
 
 
@@ -60,18 +64,18 @@ int uart_init(uart_t uart, uint32_t baudrate, uart_rx_cb_t rx_cb, void *arg)
 
 void uart_write(uart_t uart, const uint8_t *data, size_t len)
 {
-	if(uart > UART_NUMOF || uart == 0)
+	if (uart > UART_NUMOF || uart == 0)
 		return;
 
-	while(len--) {
-		while(UxSTA(pic_uart[uart]) & UTXBF){}
+	while (len--) {
+		while (UxSTA(pic_uart[uart]) & UTXBF) {}
 		UxTXREG(pic_uart[uart]) = *data++;
 	}
 }
 
 void uart_poweron(uart_t uart)
 {
-	if(uart > UART_NUMOF || uart == 0)
+	if (uart > UART_NUMOF || uart == 0)
 		return;
 
 	UxMODESET(pic_uart[uart]) = ON;
@@ -80,7 +84,7 @@ void uart_poweron(uart_t uart)
 
 void uart_poweroff(uart_t uart)
 {
-	if(uart > UART_NUMOF || uart == 0)
+	if (uart > UART_NUMOF || uart == 0)
 		return;
 
 	UxMODECLR(pic_uart[uart]) = ON;

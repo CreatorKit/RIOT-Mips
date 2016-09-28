@@ -41,8 +41,8 @@ PROVIDE (__memory_size = 128K);
 /* Base of the memory returned by _get_ram_range */
 PROVIDE (__memory_base = 0x80000000);
 
-/* Stride length for tlb software invalidate for tlbinvf 
- * (mipsXXr3+). Some MIPS implementations may layout the sets/ways 
+/* Stride length for tlb software invalidate for tlbinvf
+ * (mipsXXr3+). Some MIPS implementations may layout the sets/ways
  * differently in the index register. Either sets LSB or ways LSB.
  *
  * By setting this to 1 we presume that sets come first. The default boot
@@ -124,7 +124,7 @@ SECTIONS
   AT (__boot_flash_start)
   {
     __base = .;
-    
+
     *(.reset)		/* Reset entry point. */
     *(.boot)		/* Boot code. */
     . = ALIGN(8);
@@ -135,7 +135,7 @@ SECTIONS
     *(.devcfg1)
     *(.devcfg0)
   } = 0xFFFFFFFF
-  
+
   /* Start of the application */
   .exception_vector ALIGN(__flash_vector_start, 0x1000) :
   AT (__flash_vector_start)
@@ -232,12 +232,12 @@ SECTIONS
     *(.gnu.linkonce.r.*)
   }
   _rom_data_copy = .;
-  
+
   .data ALIGN(__memory_base + 0x1000, 16) :
   AT (_rom_data_copy)
   {
      _fdata = .;
-    
+
       *(.data)
       *(.data.*)
       *(.gnu.linkonce.d.*)
@@ -245,12 +245,9 @@ SECTIONS
     . = ALIGN(8);
     _gp = . + 0x8000;
     __global = _gp;
-    
+
       *(.lit8)
-    
-    
       *(.lit4)
-    
       *(.sdata)
       *(.sdata.*)
       *(.gnu.linkonce.s.*)
